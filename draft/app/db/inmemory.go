@@ -31,7 +31,7 @@ type carDB struct {
 }
 
 func (c *carDB) InsertCar(ctx context.Context, car *CarEntity) error {
-	if _, exists := c.cars[car.CarID]; exists  {
+	if _, exists := c.cars[car.CarID]; exists {
 		return fmt.Errorf("car %s already exists", car.CarID)
 	}
 	c.cars[car.CarID] = car

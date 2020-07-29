@@ -37,7 +37,7 @@ func InvokeService() fx.Option {
 func serviceSetup(deps httpServiceDeps) (server.WebService, error) {
 	builder := deps.Builder.
 		SetLogger(deps.Logger.Debug).
-		RegisterGRPCAPIs(deps.gRPCServerAPIs)    // setup grpc api
+		RegisterGRPCAPIs(deps.gRPCServerAPIs) // setup grpc api
 	builder = deps.configureGRPCGateway(builder) // setup rest api over grpc
 	return builder.Build()
 }

@@ -2,7 +2,6 @@ package providers
 
 // TODO jaeger
 
-
 //func Tracer() fx.Option {
 //	return fx.Provide(bjaeger.Builder())
 //}

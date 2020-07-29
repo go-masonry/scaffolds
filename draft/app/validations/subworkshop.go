@@ -10,7 +10,7 @@ type SubWorkshopValidations interface {
 	PaintCar(ctx context.Context, request *workshop.SubPaintCarRequest) error
 }
 
-type subWorkshopValidations struct {}
+type subWorkshopValidations struct{}
 
 func CreateSubWorkshopValidations() SubWorkshopValidations {
 	return new(subWorkshopValidations)

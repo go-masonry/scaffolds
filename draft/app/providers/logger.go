@@ -54,4 +54,3 @@ func selfStaticFields(name string) map[string]interface{} {
 	}
 	return output
 }
-

@@ -13,7 +13,7 @@ import (
 type workshopServiceDeps struct {
 	fx.In
 
-	Logger log.Logger
+	Logger      log.Logger
 	Controller  controllers.WorkshopController
 	Validations validations.WorkshopValidations
 }
