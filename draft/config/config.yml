@@ -19,6 +19,11 @@ mortar:
       tag2: value
       tag3: value
   middleware:
+    rest:
+      client:
+        trace:
+          request: true
+          response: true
     grpc:
       server:
         log:

@@ -31,22 +31,22 @@ func main() {
 
 func createApplication(configFilePath string, additionalFiles []string) *fx.App {
 	return fx.New(
-		fx.NopLogger,
+		//fx.NopLogger,
 		// Defaults
-		providers.Configuration(configFilePath, additionalFiles...),
-		providers.JWTExtractor(),
-		providers.Logger(),
-		providers.HttpClientBuilder(), // custom http client with interceptors
+		providers.ConfigurationOption(configFilePath, additionalFiles...),
+		//providers.JWTExtractorOption(),
+		providers.LoggerOption(),
+		providers.HttpClientBuilderOption(), // custom http client with interceptors
 		// optional providers
-		optionalProviders(),
+		optionalProvidersOption(),
 		// This application/service
-		thisServiceProviders(),
+		thisServiceProvidersOption(),
 		// Invoke everything
-		providers.InvokeService(), // start
+		providers.InvokeServiceOption(), // start
 	)
 }
 
-func thisServiceProviders() fx.Option {
+func thisServiceProvidersOption() fx.Option {
 	return fx.Provide(
 		services.CreateWorkshopService,
 		services.CreateSubWorkshopService,
@@ -58,10 +58,12 @@ func thisServiceProviders() fx.Option {
 	)
 }
 
-func optionalProviders() fx.Option {
-	return fx.Provide(
-		handlers.InternalDebugHandlers,
-		handlers.InternalProfileHandlerFuncs,
-		handlers.SelfHandlers,
+func optionalProvidersOption() fx.Option {
+	return fx.Options(
+		handlers.InternalDebugHandlersOption(),
+		handlers.InternalProfileHandlerFunctionsOption(),
+		handlers.SelfHandlersOption(),
+		//handlers.HealthHandlerOption(),
+		providers.TracerOption(),
 	)
 }

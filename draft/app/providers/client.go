@@ -5,6 +5,9 @@ import (
 	"go.uber.org/fx"
 )
 
-func HttpClientBuilder() fx.Option {
-	return fx.Provide(partial.HttpClientBuilder)
+func HttpClientBuilderOption() fx.Option {
+	return fx.Provide(
+		partial.HttpClientBuilder,
+		partial.GRPCClientConnectionBuilder,
+	)
 }

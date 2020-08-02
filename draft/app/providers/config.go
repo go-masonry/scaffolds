@@ -1,12 +1,12 @@
 package providers
 
 import (
-	"github.com/go-masonry/bricks/cfg"
-	"github.com/go-masonry/bricks/cfg/bviper"
+	"github.com/go-masonry/bviper"
+	"github.com/go-masonry/mortar/interfaces/cfg"
 	"go.uber.org/fx"
 )
 
-func Configuration(configFilePath string, additionalFilePaths ...string) fx.Option {
+func ConfigurationOption(configFilePath string, additionalFilePaths ...string) fx.Option {
 	return fx.Provide(func() (cfg.Config, error) {
 		builder := bviper.Builder().SetConfigFile(configFilePath)
 		for _, extraFile := range additionalFilePaths {

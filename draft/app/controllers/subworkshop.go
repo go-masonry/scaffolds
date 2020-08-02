@@ -3,7 +3,8 @@ package controllers
 import (
 	"context"
 	"fmt"
-	"github.com/go-masonry/bricks/log"
+	"github.com/go-masonry/mortar/interfaces/http/client"
+	"github.com/go-masonry/mortar/interfaces/log"
 	workshop "github.com/go-masonry/scaffolds/draft/api"
 	"github.com/golang/protobuf/ptypes/empty"
 	"go.uber.org/fx"
@@ -17,7 +18,8 @@ type SubWorkshopController interface {
 type subWorkshopControllerDeps struct {
 	fx.In
 
-	Logger log.Logger
+	Logger            log.Logger
+	GRPCClientBuilder client.GRPCClientConnectionBuilder
 }
 
 type subWorkshopController struct {
@@ -35,8 +37,9 @@ func (s *subWorkshopController) PaintCar(ctx context.Context, request *workshop.
 	if err := s.doActualPaint(ctx, request.GetCar()); err != nil {
 		return nil, err
 	}
+	wrapper := s.deps.GRPCClientBuilder.Build()
 	// Dial back to caller
-	conn, err := grpc.DialContext(ctx, request.GetCallbackServiceAddress(), grpc.WithInsecure())
+	conn, err := wrapper.Dial(ctx, request.GetCallbackServiceAddress(), grpc.WithInsecure())
 	if err != nil {
 		return nil, fmt.Errorf("car painted but we can't callback to %s, %w", request.GetCallbackServiceAddress(), err)
 	}

@@ -1,11 +1,12 @@
 package providers
 
 import (
-	"github.com/go-masonry/bricks/cfg"
-	"github.com/go-masonry/bricks/log"
-	"github.com/go-masonry/bricks/log/bzerolog"
+	"github.com/go-masonry/bjaeger"
+	"github.com/go-masonry/bzerolog"
 	"github.com/go-masonry/mortar/constructors"
-	"github.com/go-masonry/mortar/self"
+	"github.com/go-masonry/mortar/interfaces/cfg"
+	"github.com/go-masonry/mortar/interfaces/log"
+	"github.com/go-masonry/mortar/mortar"
 	"go.uber.org/fx"
 	"os"
 )
@@ -18,7 +19,7 @@ const (
 	gitCommit   = "git"
 )
 
-func Logger() fx.Option {
+func LoggerOption() fx.Option {
 	return fx.Options(
 		fx.Provide(loggerBuilder),
 		fx.Provide(constructors.DefaultLogger),
@@ -26,15 +27,15 @@ func Logger() fx.Option {
 }
 
 func loggerBuilder(config cfg.Config) log.Builder {
-	appName := config.Get(self.Name).String() // empty string is just fine
+	appName := config.Get(mortar.Name).String() // empty string is just fine
 
 	builder := bzerolog.
 		Builder().
 		AddStaticFields(selfStaticFields(appName)).
 		// You can add explicit context extractors here or use the implicit fx.Group used by `go-masonry/mortar/constructors/logger.go`
-		// AddContextExtractors().
+		AddContextExtractors(bjaeger.TraceInfoExtractorFromContext).
 		IncludeCallerAndSkipFrames(framesToSkip)
-	if config.Get(self.LoggerWriterConsole).Bool() {
+	if config.Get(mortar.LoggerWriterConsole).Bool() {
 		builder = builder.SetWriter(bzerolog.ConsoleWriter(os.Stderr))
 	}
 	return builder
@@ -42,7 +43,7 @@ func loggerBuilder(config cfg.Config) log.Builder {
 
 func selfStaticFields(name string) map[string]interface{} {
 	output := make(map[string]interface{})
-	info := self.GetBuildInformation()
+	info := mortar.GetBuildInformation()
 	if len(name) > 0 {
 		output[application] = name
 	}

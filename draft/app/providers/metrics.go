@@ -1,13 +1,13 @@
 package providers
 
 import (
-	"github.com/go-masonry/bricks/monitor"
-	"github.com/go-masonry/bricks/monitor/bdatadog"
+	"github.com/go-masonry/bdatadog"
 	"github.com/go-masonry/mortar/constructors"
+	"github.com/go-masonry/mortar/interfaces/monitor"
 	"go.uber.org/fx"
 )
 
-func Metrics() fx.Option {
+func MetricsOption() fx.Option {
 	return fx.Options(
 		fx.Provide(monitorBuilder),
 

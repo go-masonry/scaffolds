@@ -2,7 +2,7 @@ package services
 
 import (
 	"context"
-	"github.com/go-masonry/bricks/log"
+	"github.com/go-masonry/mortar/interfaces/log"
 	workshop "github.com/go-masonry/scaffolds/draft/api"
 	"github.com/go-masonry/scaffolds/draft/app/controllers"
 	"github.com/go-masonry/scaffolds/draft/app/validations"
