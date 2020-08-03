@@ -1,31 +1,28 @@
-package providers
+package mortar
 
 import (
 	"context"
 	"github.com/go-masonry/bjaeger"
 	"github.com/go-masonry/mortar/interfaces/cfg"
 	"github.com/go-masonry/mortar/interfaces/log"
-	"github.com/go-masonry/mortar/middleware/interceptors/trace"
 	"github.com/go-masonry/mortar/mortar"
 	opentracing "github.com/opentracing/opentracing-go"
 	"go.uber.org/fx"
 )
 
-func TracerOption() fx.Option {
-	return fx.Options(
-		fx.Provide(tracerBuilder),
-		trace.GRPCTracingUnaryInterceptorOption(),
-		trace.TracerGRPCClientInterceptorOption(),
-		trace.TracerRESTClientInterceptorOption(),
-	)
+func TracerFxOption() fx.Option {
+	return fx.Provide(JaegerBuilder)
 }
 
 // This constructor assumes you have JAEGER environment variables set
+//
 // https://github.com/jaegertracing/jaeger-client-go#environment-variables
-func tracerBuilder(lc fx.Lifecycle, config cfg.Config, logger log.Logger) (opentracing.Tracer, error) {
+//
+// Once built it will register Lifecycle hooks (connect on start, close on stop)
+func JaegerBuilder(lc fx.Lifecycle, config cfg.Config, logger log.Logger) (opentracing.Tracer, error) {
 	openTracer, err := bjaeger.Builder().
 		SetServiceName(config.Get(mortar.Name).String()).
-		AddOptions(bjaeger.BricksLoggerOption(logger)).
+		AddOptions(bjaeger.BricksLoggerOption(logger)). // verbose logging,
 		Build()
 	if err != nil {
 		return nil, err

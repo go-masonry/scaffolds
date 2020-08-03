@@ -1,4 +1,4 @@
-package providers
+package mortar
 
 import (
 	"github.com/go-masonry/bviper"
@@ -6,7 +6,7 @@ import (
 	"go.uber.org/fx"
 )
 
-func ConfigurationOption(configFilePath string, additionalFilePaths ...string) fx.Option {
+func ViperFxOption(configFilePath string, additionalFilePaths ...string) fx.Option {
 	return fx.Provide(func() (cfg.Config, error) {
 		builder := bviper.Builder().SetConfigFile(configFilePath)
 		for _, extraFile := range additionalFilePaths {

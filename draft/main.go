@@ -2,12 +2,8 @@ package main
 
 import (
 	"github.com/alecthomas/kong"
-	"github.com/go-masonry/mortar/handlers"
-	"github.com/go-masonry/scaffolds/draft/app/controllers"
-	"github.com/go-masonry/scaffolds/draft/app/db"
-	"github.com/go-masonry/scaffolds/draft/app/providers"
-	"github.com/go-masonry/scaffolds/draft/app/services"
-	"github.com/go-masonry/scaffolds/draft/app/validations"
+	"github.com/go-masonry/mortar/providers"
+	"github.com/go-masonry/scaffolds/draft/app/mortar"
 	"go.uber.org/fx"
 )
 
@@ -31,39 +27,15 @@ func main() {
 
 func createApplication(configFilePath string, additionalFiles []string) *fx.App {
 	return fx.New(
-		//fx.NopLogger,
-		// Defaults
-		providers.ConfigurationOption(configFilePath, additionalFiles...),
-		//providers.JWTExtractorOption(),
-		providers.LoggerOption(),
-		providers.HttpClientBuilderOption(), // custom http client with interceptors
-		// optional providers
-		optionalProvidersOption(),
-		// This application/service
-		thisServiceProvidersOption(),
-		// Invoke everything
-		providers.InvokeServiceOption(), // start
-	)
-}
-
-func thisServiceProvidersOption() fx.Option {
-	return fx.Provide(
-		services.CreateWorkshopService,
-		services.CreateSubWorkshopService,
-		controllers.CreateWorkshopController,
-		controllers.CreateSubWorkshopController,
-		db.CreateCarDB,
-		validations.CreateWorkshopValidations,
-		validations.CreateSubWorkshopValidations,
-	)
-}
-
-func optionalProvidersOption() fx.Option {
-	return fx.Options(
-		handlers.InternalDebugHandlersOption(),
-		handlers.InternalProfileHandlerFunctionsOption(),
-		handlers.SelfHandlersOption(),
-		//handlers.HealthHandlerOption(),
-		providers.TracerOption(),
+		mortar.ViperFxOption(configFilePath, additionalFiles...), // Configuration map
+		mortar.LoggerFxOption(),                                  // Logger
+		mortar.TracerFxOption(),                                  // Jaeger tracing
+		mortar.HttpClientFxOptions(),
+		mortar.HttpServerFxOptions(),
+		mortar.InternalHttpHandlersFxOptions(),
+		// Draft service dependencies
+		mortar.DraftAPIsAndOtherDependenciesFxOption(), // register draft APIs
+		// This one invokes all the above
+		providers.CreateEntireWebServiceDependencyGraph(), // http server invoker
 	)
 }
