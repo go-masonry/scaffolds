@@ -1,6 +1,6 @@
 # GRPC-Service template
 
-[Cookie Cutter](https://cookiecutter.readthedocs.io) template to create a simple gRPC service with Mortar
+[Cookie Cutter](https://cookiecutter.readthedocs.io) template to create a simple gRPC service with [Mortar](https://github.com/go-masonry/mortar)
 
 Clone scaffolds repository to your local directory
 
