@@ -9,8 +9,8 @@ import (
 	"go.uber.org/fx"
 )
 
-// PrometheusFxOption registers prometheus
-func PrometheusFxOption() fx.Option {
+// MonitoringFxOption registers prometheus
+func MonitoringFxOption() fx.Option {
 	return fx.Options(
 		providers.MonitorFxOption(),                     // Mortar Metrics interface
 		providers.MonitorGRPCInterceptorFxOption(),      // measure every gRPC call duration
