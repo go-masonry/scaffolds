@@ -1,0 +1,50 @@
+mortar:
+  name: "{{cookiecutter.app_name}}"
+  server:
+    grpc:
+      port: {{cookiecutter.port}}
+    rest:
+      external:
+        port: {{cookiecutter.port|int + 1}}
+      internal:
+        port: {{cookiecutter.port|int + 2}}
+  logger:
+    level: info
+    console: false
+  monitor:
+    tags:
+  middleware:
+    rest:
+      client:
+        trace:
+          request: true
+          response: true
+    grpc:
+      server:
+        log:
+          request: true
+          response: false
+          level: debug
+        trace:
+          request: true
+          response: true
+        headers:
+          - authorization
+      client:
+        trace:
+          request: true
+          response: true
+    logger:
+      headers:
+        - x-forwarded-for
+        - special-header
+  handlers:
+    self:
+      obfuscate:
+        - "pass"
+        - "auth"
+        - "secret"
+        - "login"
+        - "user"
+        - "logname"
+        - "token"

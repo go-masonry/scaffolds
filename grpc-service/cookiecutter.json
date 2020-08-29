@@ -1,0 +1,5 @@
+{
+    "app_name" : "mygrpcservice",
+    "port": "5380",
+    "project_dir" : "github.com/organization"
+}
