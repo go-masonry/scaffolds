@@ -11,5 +11,5 @@ git clone https://github.com/go-masonry/scaffolds.git
 Run
 
 ```shell
-cookiecutter -o $GOPATH/src/github.com/youroriganization local-scaffolds-repo/tutorial-example
+cookiecutter -o $GOPATH/src/github.com/your-organization local-scaffolds-repo/tutorial-example
 ```
