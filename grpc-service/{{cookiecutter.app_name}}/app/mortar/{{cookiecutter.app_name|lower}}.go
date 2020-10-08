@@ -1,14 +1,14 @@
 package mortar
 
 import (
-	"github.com/go-masonry/mortar/providers/groups"
 	serverInt "github.com/go-masonry/mortar/interfaces/http/server"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/go-masonry/mortar/providers/groups"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
 )
 
-type {{cookiecutter.app_name|lower}}ServiceDeps struct {
+type {{cookiecutter.app_name|lower|replace('-', '_')}}ServiceDeps struct {
 	fx.In
 
 	// API Interfaces
@@ -16,24 +16,24 @@ type {{cookiecutter.app_name|lower}}ServiceDeps struct {
 	// SubWorkshop workshop.SubWorkshopServer
 }
 
-func {{cookiecutter.app_name|capitalize}}APIsAndOtherDependenciesFxOption() fx.Option {
+func {{cookiecutter.app_name|lower|replace('-', '_')|capitalize}}APIsAndOtherDependenciesFxOption() fx.Option {
 	return fx.Options(
 		// GRPC Service APIs registration
 		fx.Provide(fx.Annotated{
 			Group:  groups.GRPCServerAPIs,
-			Target: {{cookiecutter.app_name|lower}}GRPCServiceAPIs,
+			Target: {{cookiecutter.app_name|lower|replace('-', '_')}}GRPCServiceAPIs,
 		}),
 		// GRPC Gateway Generated Handlers registration
 		fx.Provide(fx.Annotated{
 			Group:  groups.GRPCGatewayGeneratedHandlers + ",flatten", // "flatten" does this [][]serverInt.GRPCGatewayGeneratedHandlers -> []serverInt.GRPCGatewayGeneratedHandlers
-			Target: {{cookiecutter.app_name|lower}}GRPCGatewayHandlers,
+			Target: {{cookiecutter.app_name|lower|replace('-', '_')}}GRPCGatewayHandlers,
 		}),
 		// All other {{cookiecutter.app_name}} dependencies
-		{{cookiecutter.app_name|lower}}Dependencies(),
+		{{cookiecutter.app_name|lower|replace('-', '_')}}Dependencies(),
 	)
 }
 
-func {{cookiecutter.app_name|lower}}GRPCServiceAPIs(deps {{cookiecutter.app_name|lower}}ServiceDeps) serverInt.GRPCServerAPI {
+func {{cookiecutter.app_name|lower|replace('-', '_')}}GRPCServiceAPIs(deps {{cookiecutter.app_name|lower|replace('-', '_')}}ServiceDeps) serverInt.GRPCServerAPI {
 	return func(srv *grpc.Server) {
 		panic("add your grpc server API implementation")
 		// workshop.RegisterWorkshopServer(srv, deps.Workshop)
@@ -43,7 +43,7 @@ func {{cookiecutter.app_name|lower}}GRPCServiceAPIs(deps {{cookiecutter.app_name
 	}
 }
 
-func {{cookiecutter.app_name|lower}}GRPCGatewayHandlers() []serverInt.GRPCGatewayGeneratedHandlers {
+func {{cookiecutter.app_name|lower|replace('-', '_')}}GRPCGatewayHandlers() []serverInt.GRPCGatewayGeneratedHandlers {
 	return []serverInt.GRPCGatewayGeneratedHandlers{
 		// Register your grpc-gateway REST API
 		func(mux *runtime.ServeMux, endpoint string) error {
@@ -59,8 +59,8 @@ func {{cookiecutter.app_name|lower}}GRPCGatewayHandlers() []serverInt.GRPCGatewa
 	}
 }
 
-func {{cookiecutter.app_name}}Dependencies() fx.Option {
+func {{cookiecutter.app_name|lower|replace('-', '_')}}Dependencies() fx.Option {
 	return fx.Provide(
-		// your constructors should be here
+	// your constructors should be here
 	)
 }

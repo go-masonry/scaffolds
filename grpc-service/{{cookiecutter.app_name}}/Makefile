@@ -10,10 +10,10 @@ gen-api:
 	@protoc -I.\
         -I$$GOPATH/src \
         -I$$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-        --grpc-gateway_out=:api \
-        --swagger_out=:api \
+        --grpc-gateway_out=:. \
+        --openapiv2_out=:. \
         --go_out=plugins=grpc:api \
-        api/garage.proto\
+        api/{{cookiecutter.app_name|lower}}.proto\
 
 test:
 	@echo "Testing ..."
