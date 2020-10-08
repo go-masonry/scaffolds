@@ -1,9 +1,9 @@
 package main
 
 import (
+	"{{cookiecutter.project_dir}}/{{cookiecutter.app_name}}/app/mortar"
 	"github.com/alecthomas/kong"
 	"github.com/go-masonry/mortar/providers"
-	"{{cookiecutter.project_dir}}/{{cookiecutter.app_name}}/app/mortar"
 	"go.uber.org/fx"
 )
 
@@ -35,7 +35,7 @@ func createApplication(configFilePath string, additionalFiles []string) *fx.App 
 		mortar.HTTPServerFxOptions(),
 		mortar.InternalHTTPHandlersFxOptions(),
 		// "{{cookiecutter.app_name}}" service dependencies
-		mortar.{{cookiecutter.app_name|capitalize}}APIsAndOtherDependenciesFxOption(), // register "{{cookiecutter.app_name}}" APIs
+		mortar.{{cookiecutter.app_name|lower|replace('-', '_')|capitalize}}APIsAndOtherDependenciesFxOption(), // register "{{cookiecutter.app_name}}" APIs
 		// This one invokes all the above
 		providers.BuildMortarWebServiceFxOption(), // http server invoker
 	)

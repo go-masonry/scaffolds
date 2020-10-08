@@ -8,8 +8,14 @@ Clone scaffolds repository to your local directory
 git clone https://github.com/go-masonry/scaffolds.git
 ```
 
-Run
+Run if you want to create a new directory
 
 ```shell
 cookiecutter -o $GOPATH/src/github.com/your-organization local-scaffolds-repo/tutorial-example
+```
+
+Run if you have an existing directory:
+
+```shell
+cookiecutter -f -o $GOPATH/src/github.com/your-organization local-scaffolds-repo/tutorial-example
 ```
